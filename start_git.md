@@ -204,6 +204,45 @@ public으로 설정하면 모두에게 공개되고 누구나 가져갈 수 있�
 - *git remote add origin <repository 주소>* -> origin은 별명임(이 저장소를 앞으로 오리진이라고 부를 거야 라고 하는 것, 보통은 이 remote repo를 origin이라고 함 다른 별명보다는)
 - 위처럼 한 다음 *git push -u origin master* 이렇게 침 -> -u 는 이렇게 리모트를 생성하고 그것을 보낼때 한 번만 씀, master는 로컬에 저장된 branch의 이름임
 
-git push origin master ->  origin에 있는 master를 push할 거야
+git push origin master ->  origin에 있는 master를 push할 거야(모든 push는 이런식으로 이루어져있는데 뒤에 origin master는 생략된 것 repo가 여러개 연결되어 있는 경우 이것들을 알맞은 별명으로 바꿔줘야 함)
 
-시험용
+-u를 붙이는 이유는 맨 처음 한 번 setup해주는 것
+
+----
+
+깃에서 협업을 할 때는 콜라보레이터를 만들면 됨
+
+- 만들고싶은 repo에 들어가서 *settings*에서 collaborators 들어가기
+- add people
+
+그냥 퍼블릭 상태에서는 다른 사람은 push가 안됨
+
+클론은 내가 만들고 싶은 위치에 가서 만들면 됨
+
+*클론을 해도 git config 입력해야한다.*
+
+***push 전에는 pull이 있다.***
+
+*혹시 pull을 하지 않고 push를 한다면?*
+
+- 두 사람이 모두 첫번째 줄을 수정하고 푸쉬를 했다 가정할 때 한 사람이 먼저 push를 했으면 그 다음사람은 pull을 하기 전까지 push를 하지 못함
+
+*그렇다면 동일한 부분을 수정했는데 pull을 했다면?*
+
+- conflict가 생겨서 그 부분에 >>>>>> 이런식으로 꺽쇠괄호가 생김
+- 그래서 이 부분을 정상적으로 수정하고 commit, push를 해야함
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
