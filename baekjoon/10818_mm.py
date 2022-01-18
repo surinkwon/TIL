@@ -1,3 +1,4 @@
+# 최소, 최대 구하기
 count_num = int(input())
 num_list = input().split()
 
