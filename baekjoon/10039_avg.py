@@ -1,11 +1,4 @@
-students = [0, 0, 0, 0, 0]
-total = 0
+r1, s = map(int, input().split())
 
-for score in range(5):
-    students[score] = int(input())
-
-for student in students:
-    if student < 40:
-        student = 40
-    total += student
-print(int(total / len(students)))
+r2 = int(s * 2 - r1)
+print(r2)
