@@ -1,3 +1,4 @@
+# 펠린드롬인지 확인하기
 w = input()
 
 def palin(word):
