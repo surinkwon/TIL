@@ -1,7 +1,4 @@
 # 상수
-from audioop import reverse
-
-
 a, b = input().split()
 
 def rev_num(num_st):
