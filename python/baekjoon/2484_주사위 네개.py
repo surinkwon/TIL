@@ -26,5 +26,4 @@ for e in range(len(dices)):
     else:
         reward.append(max(dice_n[e]) * 100)
 
-print(reward)
 print(max(reward))
