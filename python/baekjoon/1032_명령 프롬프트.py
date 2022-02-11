@@ -7,7 +7,7 @@ for i in range(n):
     words[i] = input()
 rlt = ''
 
-if n != 1:
+if n != 1: # n이 1이면 for문에서 word인덱스 참조 불가
     # 배열을 돌며 이름들을 비교
     for letter in range(len(words[0])):
         for word in range(1, n):
