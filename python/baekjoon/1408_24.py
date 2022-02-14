@@ -2,8 +2,6 @@ now = list(map(int, input().split(':')))
 mission = list(map(int, input().split(':')))
 rest = [0] * 3
 
-print(mission)
-
 for i in range(len(now)-1, 0, -1):
     if now[i] > mission[i]:
         rest[i] = 60 - now[i] + mission[i]
