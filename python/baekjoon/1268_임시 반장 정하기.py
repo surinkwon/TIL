@@ -21,8 +21,6 @@ for i in range(5):
                 if j != k and cnt[j][k] == 0:
                     cnt[j][k] += 1
 
-print(cnt)
-
 cnt_s = [0] * n
 for i in range(n):
     for j in range(n):
