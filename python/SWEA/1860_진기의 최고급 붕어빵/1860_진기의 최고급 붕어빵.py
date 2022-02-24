@@ -23,7 +23,9 @@ for tc in range(1, T + 1):
     lst = [0] + bubble(lst)
 
     for i in range(1, N+1):
-        if lst[i] // M * K - i < 0:
+        # 손님이 도착한 시간에서 붕어빵을 K개 만드는 시간을 나눈 몫은
+        # 해당 시간까지 붕어빵을 총 몇 '번' 만들 수 있는지를 나타냄
+        if (lst[i] // M) * K - i < 0:
             can = 'Impossible'
 
     print(f'#{tc} {can}')

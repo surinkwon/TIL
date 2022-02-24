@@ -11,7 +11,7 @@ for tc in range(1, T + 1):
     
     # N극과 S극이 번갈아서 교착상태로 세어줌
     for j in range(N):
-        n = s = 0
+        n = 0
         for i in range(N):
             if table[i][j] == 1:
                 n += 1
