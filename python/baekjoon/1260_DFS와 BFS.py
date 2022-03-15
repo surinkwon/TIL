@@ -72,6 +72,7 @@ for _ in range(M):
     if i not in connected[j]:
         connected[j].append(i)
 
+# 방문 가능한 정점이 여러 개면 번호가 작은 정점부터 방문해야 하므로 정렬해줌
 for i in range(1, len(connected)):
     connected[i] = sorted(connected[i])
 
