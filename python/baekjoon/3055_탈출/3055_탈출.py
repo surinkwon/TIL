@@ -62,11 +62,9 @@ for i in range(len(woods)):
             water.append([i, j])
         elif woods[i][j] == 'S':
             start = [i, j]
-        elif woods[i][j] == 'D':
-            gr = i
-            gc = j
 
 visited = waterBfs(water)
+
 for i in range(len(woods)):
     for j in range(len(woods[0])):
         if woods[i][j] != 'X' and visited[i][j] == 0:
