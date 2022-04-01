@@ -11,9 +11,9 @@ def howMany(i, s):
         if max_income < s:
             max_income = s
     else:
+        # 해당 일자의 상담자를 받는 경우와 받지 않는 경우
         howMany(i+schedule[i][0], s+schedule[i][1])
         howMany(i+1, s)
-
 
 
 N = int(input())
