@@ -236,12 +236,13 @@ git push origin master ->  origin에 있는 master를 push할 거야(모든 push
 
 ## Git branch
 
+- 브랜치(= **특정 커밋을 가리키는 포인터**)
 - 작업공간을 나누어서 원래 개발과 상관없이 독립적으로 개발할 수 있도록 도와주는 것
 - 원본에 대해서 안전한 개발, 체계적인 개발
 - 마스터브랜치(큰 줄기)는 상용(세상에 공개되며 실제 서비스로 사용되는 코드)
 - `git branch`: 브랜치 목록 확인
 - `git branch 브랜치이름`: 새로운 브랜치 생성
-- `git branch -d 브랜치이름`: 특정 브랜치 삭제(병합된 브랜치만 삭제)
+- `git branch -d 브랜치이름`: 특정 브랜치 삭제(병합된 브랜치만 삭제, 브랜치를 삭제해도 커밋은 남아있고 가리키던 포인터만 사라짐)
 - `git branch -D브랜치이름`: 강제 삭제
 - `git switch 브랜치이름`: 다른 브랜치로 이동
 - git에서 HEAD는 현재 어떤 커밋에 있는지를 나타냄
@@ -249,6 +250,7 @@ git push origin master ->  origin에 있는 master를 push할 거야(모든 push
 - `git log --oneline --all`: 다른 브랜치에서의 커밋까지 다 보여줌
 - `git log --oneline --all --graph`: 가지가 뻗어나간 것을 확인할 수 있음
 - `git switch -c 브랜치 이름`: 브랜치 새로 생성과 동시에 이동(스위치는 나온지 얼마 안됨 원래는 checkout이었음 그러니 이런 명령이 보이더라도 당황하지 말고 switch라 생각하자)
+- `git checkout -b 브랜치 이름`:브랜치 새로 생성과 동시에 이동
 - **스위치를 할 때는 워킹디렉토리파일이 모두 깃의 버전관리가 되고 있는지를 확인해야 함** 안 그러면 브랜치를 이동해도 그 다른 브랜치에서 작성한 파일이 남아있을 수 있음
 
 
@@ -278,3 +280,38 @@ git push origin master ->  origin에 있는 master를 push할 거야(모든 push
 - conflict 고치고 하는 커밋에는 -m적지 말고 커밋하면 vim창이 뜸 이때 esc로 명령창으로 나간다음 :를 치고 wq를 누르고 나가면 됨(입력하고 나가겠다는 뜻)
 - 충돌이 해결되고나면 3way머지랑 같은 방식으로 병합됨
 
+**충돌이 발생했을 때**
+
+![image-20220405154608008](start_git.assets/image-20220405154608008.png)
+
+- 위는 vscode에서만 지원해주는 기능. git에서는 지원 안 함(누르는 기능 깃을 그냥 어디가 충돌됐다고 알려주기만 함)
+
+### PR
+
+- 메인 브랜치에 머지 시켜도 되는지 허가받기 위해 요청을 보내는 것
+- 브랜치 개발 끝냈으면 pull requests 들어가서 create pull requests를 하면 됨, assignees에 나 추가
+
+오픈 소스는 다른 사람의 깃헙에서 내 깃헙에 fork해온 다음 브랜치를 생성해서 작업하고 원래 깃헙에 PR을 보내면 됨
+
+---
+
+### add 취소하기
+
+- `git restore --staged <filename.extention>`
+
+### Working Directory 변경사항 취소하기
+
+**실제 내 파일의 상태(마지막 커밋 이후 변경사항들)를 이전으로 돌림(변경되기 전으로). 따라서 조심하기**
+
+- `git restroe <filename.extention>`
+
+### commit 되돌리기
+
+- `git reset --hard <commit_id>`:(대쉬로 시작하는 명령어는 옵션) 내가 가고싶은 버전(커밋)으로 되돌아감
+
+### .gitignore
+
+- 파일 이름.확장자 : 특정 파일
+- 폴더이름/: 특정 폴더
+- *.확장자: 특정 확장자
+- !파일.확장자: 모든 확장자는 제거 <파일.확장자>파일은 넣고
