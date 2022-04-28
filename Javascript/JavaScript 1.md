@@ -225,6 +225,9 @@
   - 문자열 시작과 끝의 모든 공백(스페이스, 탭, 엔터 등)을 제거
   - trimstart(): 문자열 시작의 공백을 제거
   - trimend(): 문자열 끝의 공백을 제거
+- padStart(제한할 문자열 길이, 대신 넣어줄 값)
+  - 문자열이 지정한 길이보다 짧으면 그 앞에 대신 넣어줄 값을 더해줌
+
 
 
 
@@ -333,8 +336,23 @@ const object = {
   - ~~`Element.innerHTML` 마크업 자체를 반환하는 것, 잘못하면 사용자가 페이지를 임의로 바꿔버릴 수 있고 악용될 가능성이 크기 때문에 사용하지 않을 것~~
 - 속성 변경(생성)
   - `Element.setAttribute('속성', '값')`: 속성이 있으면 변경하고 없으면 추가('class', 'id' 등)
+  - 요소노드.~으로도 설정할 수있는데 이러헥 할 때는 표준속성만 가능(form의 method는 표준이 아니라서 이렇게 설정할 수 없음)
+    - className: 클래스를 지정
+    - classList: 클래스를 조작
+      - add: 없으면 추가
+      - remove: 있으면 제거
+      - toggle: 있으면 제거, 없으면 추가
 - 속성 조회
   - `Element.getAttribute(attributeName)`: 문자열 반환
+- `outerHTML`
+  - 나를 포함해서 요소 내 포함된 HTML 마크업 반환
+  - 한번 수정하면 완전 새로운 요소가 되어버림. 따라서 다시 사용하고 싶을 때는 요소를 다시 찾아줘야 함
+- `elem.firstElementChild`: 첫번째 자식 가져오기
+- `elem.children`: 모든 자식 가져오기
+- `elem.parentElement`: 부모 가져오기
+- `elem.previousElementSibling`: 앞의 형제 가져오기
+- `elem.nextElementSibling`: 뒤 형제 가져오기
+- `elem.textContent`: 요소의 텍스트 가져오기(HTML을 제외한 텍스트)
 
 ### Event
 
