@@ -134,7 +134,7 @@ def connect_to_original(request, new_url):
 
 - shortenu/ 페이지
 
-![image-20220426225200968](README.assets/image-20220426225200968.png)
+![image-20220428225212745](README.assets/image-20220428225212745.png)
 
 - shortenu/costum/ 페이지
 
@@ -142,4 +142,4 @@ def connect_to_original(request, new_url):
 
 - URL 단축 요청을 했을 때(POST 요청) 결과 반환 페이지
 
-![image-20220426225313117](README.assets/image-20220426225313117.png)
+![image-20220428224708736](README.assets/image-20220428224708736.png)
