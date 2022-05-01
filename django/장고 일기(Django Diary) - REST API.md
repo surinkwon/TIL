@@ -86,6 +86,8 @@
 
 - django form을 만들었을 때와 비슷하게 생성
 
+- serializers.ModelSerializer를 상속받음
+
 - read_only_fields는 말 그대로 읽기만 가능한 필드로 form을 통해 값을 넘겨받지 않는 필드를 적어줌
 
   - 예: 일반적으로 게시글에 댓글을 작성할 때 게시글을 선택하고 적지 않는다. 게시글에 들어가서 댓글을 달면 자동적으로 해당 게시글과 댓글을 매치시켜주는데 이는 form에 게시글 정보가 적혀저 오지 않는다는 뜻이므로 read_only_fields에 해당 필드를 적어줘야 한다.
@@ -95,15 +97,71 @@
 
 
 
+### view
+
+``` python
+from rest_framework import status
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
 
 
+@api_view(['GEt', 'POST'])
+def article_list(request):
+    if request.method == 'GET':
+        articles = get_list_or_404(Article)
+        serializer = ArticleListSerializer(articles, many=True)
+        return Response(serializer.data)
+    elif request.method == 'POST':
+        serializer = ArticleSerializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
+@api_view(['GET', 'DELETE', 'PUT'])
+def article_detail(request, article_pk):
+    article = get_object_or_404(Article, pk=article_pk)
+    if request.method == 'GET':
+        serializer = ArticleSerializer(article)
+        return Response(serializer.data)
+    
+    elif request.method == 'DELETE':
+        article.delete()
+        data = {
+            'delete': f'{article.id}번 글이 삭제되었습니다.'
+        }
+        return Response(data, status=status.HTTP_204_NO_CONTENT)
+    
+    elif request.method == 'PUT':
+        serializer = ArticleSerializer(article, request.data, partial=True)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return Response(serializer.data)
+        
+        
+@api_view(['GET','POST'])
+def article_comment_list(request, article_pk):
+    article = get_object_or_404(Article, pk=article_pk)
+    if request.method == 'POST':
+        serializer = CommentSerializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save(article=article)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+    
+    elif request.method == 'GET':
+        comments = Comment.objects.filter(article=article)
+        serializer = CommentSerializer(comments, many=True)
+        return Response(serializer.data)
+```
 
+- rest_framework에서 Response, status, api_view를 import
+- 만들어 놓은 serializers들 import
+- 각 url로 들어오면 메소드에 따라 다른 동작을 하도록 함
+- api_view 데코레이터는 꼭 있어야 작동
+- 여기에서는 더 명확히 하기 위해 else가 아니라 모두 elif로 어떤 메소드가 들어오면 어떤 일을 하겠다는 것을 명시적으로 해줌
+- 하나의 객체가 아니라 객체 여러개를 serialize할 때는 many=True 옵션이 필요함
+- serializer의 첫 번째 인자는 form과 달리 instance이기 때문에 데이터를 넣어줄 때는 `data=request.data`처럼 적어줘야 함
+- serializer의 유효성 검사를 할 때 `raise_exception=True` 속성을 넣어주면 유효성 검사가 통과되지 않으면 400 에러를 내줌
+- 사용자에게 입력받지 않는 필드는(read_only_field) form과 달리 save할 때 그 안에 데이터를 넣어줌
 
-
-
-
-
-
-
+---
