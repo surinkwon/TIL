@@ -293,21 +293,27 @@ git push origin master ->  origin에 있는 master를 push할 거야(모든 push
 
 오픈 소스는 다른 사람의 깃헙에서 내 깃헙에 fork해온 다음 브랜치를 생성해서 작업하고 원래 깃헙에 PR을 보내면 됨
 
+브랜치를 만들고 push를 할 때는 해당 브랜치에서 `git push origin <branch이름>`
+
 ---
 
 ### add 취소하기
 
-- `git restore --staged <filename.extention>`
+- `git restore --staged <filename.extention>`: 이미 저장소에 커밋이 있었을 때
+- `git rm --cached <filename.extention>`: 저장소에 커밋이 하나도 없었을 때
 
 ### Working Directory 변경사항 취소하기
 
-**실제 내 파일의 상태(마지막 커밋 이후 변경사항들)를 이전으로 돌림(변경되기 전으로). 따라서 조심하기**
+**실제 내 파일의 상태(마지막 커밋 이후 변경사항들)를 이전으로 돌림(변경되기 전으로). 따라서 조심하기(내부적으로 원래 파일로 덮어씌우는 것이며 수정했던 내용을 이후 복원할 수 없기 때문에)**
 
-- `git restroe <filename.extention>`
+- `git restore <filename.extention>`
 
 ### commit 되돌리기
 
-- `git reset --hard <commit_id>`:(대쉬로 시작하는 명령어는 옵션) 내가 가고싶은 버전(커밋)으로 되돌아감
+- `git reset --hard <commit_id>`:(대쉬로 시작하는 명령어는 옵션) 내가 가고싶은 버전(커밋)으로 되돌아감(해당 커밋 이후 쌓은 커밋은 모두 사라짐, 모두 working directory에서 삭제됨, 완전 되돌릴 수 있는 방법이 없지는 않지만 그래도 주의하기)
+- soft 옵션: 이후 commit된 파일들을 staging area로 돌려놓음
+- mixed 옵션: 이후 commit된 파일들을 그냥 working derectory로 돌려좋음(add하지 않은 상태로)
+- 깃의 관리를 받지 않은 파일들은 영향을 받지 않음
 
 ### .gitignore
 
