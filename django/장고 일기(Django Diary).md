@@ -383,6 +383,24 @@
 
 - GET 방식으로 들어오면 데이터를 입력할 수 있는 페이지를 렌더
 
+### 2.Read
+
+- DB에 있는 데이터를 가져와 템플릿에 전달
+
+  ```python
+  from django.shortcut import get_object_or_404
+  
+  def detail(request, article_pk):
+      # article = Article.objects.get(pk=article_pk)처럼 쓰면 사용자가 명확하게 알 수 없는 오류메시지가 나오지만 아래처럼 쓰면 404 에러 메시지가 떠서 잘못된 접근임을 확실히 알 수 있음
+      article = get_object_or_404(pk=article_pk)
+      context = {
+          'article': article,
+      }
+      
+      return render(request, 'articles/detail', artilce)
+  ```
+
+  
 
 
 
@@ -390,8 +408,17 @@
 
 
 
+## 로그인 페이지
 
+### 1. 로그인 페이지 생성
 
+- 로그인, 회원가입은 분리해서 관리하기 위해 새로운 앱을 생성
+
+  ```python
+  python manage.py startapp accounts
+  ```
+
+- 
 
 
 

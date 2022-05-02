@@ -19,6 +19,8 @@
 
 *장고가 끝나서 DRF를 이용해 만들어보려고 했으나 아직 vue를 배우지 않아서  DRF는 이용하지 않았고 장고 템플릿(+부트스트랩)을 이용해 만들어보았다.*
 
+*배포는 하지 않아서 로컬 호스트 주소에 실제로 동작하지 않는다.* 
+
 
 
 ## Model(Database)
@@ -132,7 +134,7 @@ def connect_to_original(request, new_url):
 
 - shortenu/ 페이지
 
-![image-20220426225200968](README.assets/image-20220426225200968.png)
+![image-20220428225212745](README.assets/image-20220428225212745.png)
 
 - shortenu/costum/ 페이지
 
@@ -140,4 +142,4 @@ def connect_to_original(request, new_url):
 
 - URL 단축 요청을 했을 때(POST 요청) 결과 반환 페이지
 
-![image-20220426225313117](README.assets/image-20220426225313117.png)
+![image-20220428224708736](README.assets/image-20220428224708736.png)
