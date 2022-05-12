@@ -379,6 +379,26 @@ const object = {
 - AJAX를 요청하고 promise 객체를 반환
 - CDN을 삽입해야 함
 
+```js
+// 아래처럼 요청 가능
+
+axios.get(URL, {
+    params: {
+        ID: 12345
+    }
+})
+
+axios({
+    method: 'get',
+    url: 유알엘,
+    params: {
+        ID: 12345
+    }
+})
+```
+
+
+
 ### Promise methods
 
 - `.then(콜백함수)`: 요청이 성공적이었으면 콜백함수 실행, return은 promise 객체
