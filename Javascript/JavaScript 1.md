@@ -393,5 +393,5 @@ const object = {
 - 대신 JsonResponse로 데이터를 보내주면 promise 객체에 response에 데이터가 담긴다.
 - 따라서 비동기식으로 할 수 있게 된다.
 - 데이터로 어떤 것들을 넘겨줄지를 잘 정하면 된다.
-- html 데이터 속성을 이용해서 데이터를 넘겨줄 수 있다. [html 데이터 속성](https://developer.mozilla.org/ko/docs/Learn/HTML/Howto/Use_data_attributes)
+- html 데이터 속성을 이용해서 데이터를 넘겨줄 수 있다. [html 데이터 속성](https://developer.mozilla.org/ko/docs/Learn/HTML/Howto/Use_data_attributes) 이 경우 event.target.dataset에 데이터들이 담기게 된다.
 - event, response 등 인자들 console로 출력해보면서 속성들을 잘 살펴보자.
