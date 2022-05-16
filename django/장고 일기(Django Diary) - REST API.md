@@ -95,6 +95,32 @@
 
 - 1:N 관계에서 1이거나 M:N 관계에서 해당 모델에 필드를 생성하지 않은 경우(역참조를 해야 하는 경우) 이런 관계에 있는 데이터까지 포함시키고 싶으면 새로운 열을 만들어줘야 한다. 이를 만드는 방법은 다른 모델의 serializer를 참조하거나 `serializers.PrimaryKeyRelatedField`처럼 serializer의 field를 활용하는 방법이 있다. 둘 모두 form으로 받아오는 정보가 아니므로 read_only 속성을 줘야 한다. 하지만 새로 열을 만드는 것이기 때문에 read_only_fields에는 적어주지 않는다.(여기에는 원래 존재했던 필드만 적어줌)
 
+- serializer가 많아질 수 있기 때문에 따로 serializers 폴더를 만들어주고 그 안에 각 모델별로 serializer를 만들어 주는 것이 좋다.
+
+- serializer 안에 새로운 serializer를 정의해서 nested 하는 방법도 있다.
+
+  - nested 클래스를 지정하지 않고 그냥 read_only_fields에만 적어주는 경우 각 모델의 id만 나온다.(예: user의 속성들(username)은 나오지 않고 id만 전달)
+  - 그런데 nested 클래스로 해당 필드를 지정해주면 정의한 nested 클래스에서 보이도록 한 fields의 내용이 함께 나온다.
+  - 필드의 이름은 역참조할 때의 이름
+
+
+```python
+class ArticleSerializer(serializers.ModelSerializer):
+
+    class UserSerializer(serializers.ModelSerializer):
+        class Meta:
+            model = User # get_user_model을 이용해서 반환된 값을 미리 변수에 저장해놓고 사용
+            fields = ('id', 'username')
+
+    comments = CommentSerializer(many=True, read_only=True)
+    user = UserSerializer(read_only=True)
+    like_users = UserSerializer(read_only=True, many=True)
+
+    class Meta:
+        model = Article
+        fields = ('id', 'user', 'title', 'content', 'comments', 'like_users')
+```
+
 
 
 ### view
@@ -165,3 +191,50 @@ def article_comment_list(request, article_pk):
 - 사용자에게 입력받지 않는 필드는(read_only_field) form과 달리 save할 때 그 안에 데이터를 넣어줌
 
 ---
+
+### CORS 처리
+
+- `django-cors-headers`라이브러리 활용
+- 설치: `pip install django-cors-headers`
+
+```python
+# settings.py
+
+INSTALLED_APPS = [
+    'corsheaders',
+]
+
+MODDLEWARE = [
+    'corsheader.middleware.CorsMiddleware', # 맨 위에 작성하기
+]
+
+CORS_ALLOWED_ORIGINS = [
+    '' # 허용할 출처를 적어줌(ip 또는 도메인)
+]
+
+CORS_ALLOW_ALL_ORIGINS = True # 모든 교차 출처 허용
+```
+
+
+
+### `django-allauth`라이브러리를 이용한 account
+
+```python
+# settings.py
+
+INSTALLED_APPS = [
+    'allauth',
+    'allauth.account',
+    # allauth 사용을 위해 필요
+    'django.contrib.sites',
+]
+
+# django.contrib.sites에서 등록 필요
+SITE_ID = 1
+
+
+# urls.py
+path('지정 url', include('allauth.urls')),
+```
+
+- 이렇게 설정 후 allauth를 이용해 로그인 처리 가능
