@@ -196,6 +196,7 @@ def article_comment_list(request, article_pk):
 
 - `django-cors-headers`라이브러리 활용
 - 설치: `pip install django-cors-headers`
+- [django github](https://github.com/adamchainz/django-cors-headers) 참고
 
 ```python
 # settings.py
@@ -227,9 +228,12 @@ INSTALLED_APPS = [
     'allauth.account',
     # allauth 사용을 위해 필요
     'django.contrib.sites',
+    'dj_rest_auth.registration', # dj_rest_auth와 사용할 때 추가
 ]
 
 # django.contrib.sites에서 등록 필요
+# django에서 앱을(사이트를) 여러 개 만들 수 있도록 지원해주는데 이럴 때 구분을 위해 써주는 것
+# allauth 사용하려면 무조건 써야함
 SITE_ID = 1
 
 
@@ -238,3 +242,65 @@ path('지정 url', include('allauth.urls')),
 ```
 
 - 이렇게 설정 후 allauth를 이용해 로그인 처리 가능
+- 이것만으로는 로그인 기능까지 drf로 할 수 없음
+- 이 때 필요한 라이브러리가 `dj-rest-auth`
+
+
+
+### `dj-rest-auth`를 이용한 drf accounts
+
+- [dj rest auth](https://dj-rest-auth.readthedocs.io/en/latest/) 참고
+- 설치: `pip install dj-rest-auth`
+
+```python
+# settings.py
+
+INSTALLED_APPS = (
+    ...,
+    'rest_framework',
+    'rest_framework.authtoken',
+    ...,
+    'dj_rest_auth'
+)
+
+# DRF 설정
+REST_FRAMEWORK = {
+
+    # 기본 인증을 TokenAuthentication을 사용하도록 설정
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication'
+    ],
+
+    # 인증 받은 사용자만 요청하도록 설정하는 곳
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.AllowAny', # 누구나 요청 가능, 회원가입이나 로그인 할 때는 그냥 가능해야 하기 때문에 써줌
+        'rest_framework.permissions.IsAuthenticated' # 인증 받은 사람만 요청 가능(모든 곳에 login_required를 붙여준 것과 같음)
+    ]
+}
+
+# urls.py
+
+path('api/v1/accounts/', include('dj_rest_auth.urls')), # 보통 api url을 만들 때는 api와 버전을 명시해줌
+path('api/v1/accounts/signup/', include('dj_rest_auth.registration.urls')), # signup은 다른 모듈에 있기 때문에 따로 적어줘야 함 
+```
+
+- 이후 회원가입을 하고 로그인을 하면(회원가입 하면 자동 로그인 됨) 토큰을 주고 이를 프론트엔드에서 받아서 헤더에 저장 후 요청을 보낼 때마다 같이 보냄
+
+- 서버에서는 헤더에 토큰 값이 들어있는지 확인 후 토큰 테이블에 토큰값이 들어있는지 비교(들어있으면 다른 페이지로 이동해도 로그인을 다시 할 필요가 없어짐, session도 필요 없음)
+
+- 단점: 토큰이 탈취되면 보안에 치명적인 문제가 생김
+
+- 토큰 관리법
+
+  1. 토큰 만료시간 지정
+  2. 토큰 안에 유저 id(pk)를 담음
+
+  - 이것들을 담아서 암호화를 한 후 토큰을 만드는 것 / 이를 서버가 해독 후 만료되었는지 확인 혹은 토큰이 유효한 토큰인지(위의 정보들이 들어있는지, 해독이 되는지) 확인
+
+- black list에 넣어서 유효하지 않은 토큰으로 지정하는 방법도 있음(한 유저에게 유효한 토큰이 여러 개 있을 때 사용하기도 함)
+
+- Access Token: 실제 유저 인증에 사용되는 토큰(만료 기간이 짧음) / Refresh Token(엑세스 토큰이 다 되면 리프레시 토큰을 보냄) -> 실무에서 사용
+
+- 토큰 발급시(로그인시) 위의 토큰을 둘 다 보내줌(엑세스는 일반적으로 4시간, 리프레시는 1주일정도로 만료기간 설정) -> 엑세스가 만료되면 서버에 리프레시토큰을 보내고 서버가 이를 확인하고 만료가 안 됐으면 다시 엑세스 토큰을 보내줌 / 리프레시 토큰이 만료되면 다시 로그인을 해야 하는 것
+
+- 위에서 라이브러리를 사용해서 구현한 것은 영구적인 토큰을 발급해준 것(엑세스, 리프레시 토큰 사용하려면 다르게 구현해야 함)
