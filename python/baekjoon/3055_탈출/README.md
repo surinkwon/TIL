@@ -13,9 +13,9 @@
 >
 ># 고려한 후
 >for i in range(len(woods)):
->    for j in range(len(woods[0])):
->        if woods[i][j] != 'X' and visited[i][j] == 0:
->            visited[i][j] = 987654321
+>        for j in range(len(woods[0])):
+>            if woods[i][j] != 'X' and visited[i][j] == 0:
+>                visited[i][j] = 987654321
 >```
 >
 >고려하기 전의 전에도 사실 두더지 굴 지점을 계속 0으로 해놔서 갈 수 있음에도 불구하고 가지 못하는 결과를 반환한 경우가 있었다. 그래서 두더지 굴 지점을 높은 값으로 지정해줬는데 또 틀렸다.
