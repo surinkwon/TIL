@@ -172,3 +172,179 @@ ReactDOM.render(container, root)
   // index가 0이면 렌더
   {index === '0' ? <React 요소/> : null}
   ```
+
+# Props
+
+- Vue에서 prop 넘겨주는 것처럼 react에서도 같은 방식으로 넘겨줄 수 있음
+- react에서는 컴포넌트 함수의 첫 번째 인자로 모든 props들이 객체 형태로 들어옴
+    - 구조분해할당으로 변수 가져오기
+    - 구조분해할당을 할 때 정의되지 않은 인자에 대해서는 값을 지정할 수 있음(기본값 지정 가능)
+    - 넘겨주지 않은 prop은 undefined로 인식
+    
+    ```jsx
+    
+    function Btn({text, big = false}) {
+      return (
+        <button 
+          style={{
+            backgroundColor: 'tomato',
+            color: 'white',
+            padding: '10px 20px',
+            border: 0,
+            borderRadius: 10,
+            fontSize: big ? 18 : 16
+        }}
+      >
+        {text}
+      </button>
+      )
+    }
+    
+    const App = () => {
+      return (
+        <div>
+          <Btn text="Save Changes" big={true}/>
+    			// 아래 버튼에는 big을 넘겨주지 않았으므로 이 때는 undefined로 인식됨
+          <Btn text="Continue"/>
+        </div>
+    )}
+    ```
+    
+
+- props에 함수 전달 가능
+    - 이 때 컴포넌트에 전달하는 함수는 prop이지 이벤트리스너가 아님!
+    - 상위 컴포넌트에서 하위 컴포넌트를 넣을 때 `<하위 컴포넌트 이름 />` 이 부분에 넣어주는 것은 모두 props
+    
+    ```jsx
+    function Btn({text, changeValue}) {
+      return (
+        <button 
+          onClick={changeValue}
+          style={{
+            backgroundColor: 'tomato',
+            color: 'white',
+            padding: '10px 20px',
+            border: 0,
+            borderRadius: 10,
+          }}
+        >
+          {text}
+        </button>
+      )
+    }
+    
+    const App = () => {
+      const [value, setValue] = React.useState('Save Changes')
+      const changeValue = () => setValue('Revert Changes')
+    
+      return (
+        <div>
+          <Btn text={value} changeValue={changeValue}/>
+          <Btn text="Continue" />
+        </div>
+    )}
+    ```
+    
+    - 위 코드에서 Save Changes 버튼을 누르면 상위 컴포넌트인 App의 상태가 변하기 때문에 변하는 게 없는 Continue 버튼도 re-rendering 된다. 이렇게 props가 변하지 않을 때 리렌더되게 하고 싶지 않을 때 react memo를 사용
+    - `const MemorizedBtn = React.memo(Btn)` 이 코드를 추가하고 App에 있는 Btn을 MemorizedBtn으로 바꿔주면 됨
+
+## Prop Types
+
+- prop의 타입이 무엇인지 ReactJS에 알려줌
+- 에러가 발생하지는 않지만 잘못되었다는 문구를 콘솔창에 띄움
+- `<script src="https://unpkg.com/prop-types@15.7.2
+/prop-types.js"></script>`
+    
+    ```jsx
+    Btn.propTypes = {
+      프롭명: PropTypes.string,
+    }
+    ```
+    
+
+---
+
+# Create React App
+
+- react를 사용할 때 많은 사전 설정들을 미리 해줌
+- `npx create-react-app 프로젝트 이름`
+- 생성 후 src에서 App.js, index.js 빼고 모두 지우기, App.js, index.js에서도 필요한 부분 빼고 지우기
+- prop types를 사용하고 싶으면 인스톨해주기
+    - `npm i prop-types`
+- css 파일 import
+    
+    ```jsx
+    import styles from './Button.module.css'
+    
+    function Button({text}) {
+      return (
+        <button className={styles.btn}>{text}</button>
+      )
+    }
+    // css 파일 이름은 컴포넌트이름.module.css
+    // 앞의 이름은 뭐로 하든 상관없지만 .module.css를 붙여줘야 함
+    ```
+    
+    - css 파일을 따로 만들어서 import하면 클래스 이름이 같아도 렌더될 때 무작위 다른 이름으로 렌더되기 때문에 클래스 이름을 다르게 지을 필요 없음
+    - css 파일을 import하고 `import한 이름.정의한 클래스 이름` 이렇게 써주면 됨
+
+# Effect
+
+- **언제 코드가 실행될 지를 정할 수 있게 해줌**
+- 컴포넌트가 처음에만 render되고 이후에는 되지 않도록 하는 경우가 있음(첫 번째 render에만 코드가 실행되고 다른 state 변화에는 실행되지 않도록 하는 경우)
+    - 예: API를 통해 데이터를 가져올 때
+- state가 변경되면 모든 컴포넌트는(컴포넌트 코드) 재실행됨. 하지만 몇몇 코드들은 재실행되지 않게 하고 싶을 수 있음. 이 때 사용하는 것이 useEffect
+- 코드가 한 번만 실행될 수 있도록 보호해줌
+- `useEffect(함수, [])`
+    - 두 번째 인자로 받는 배열에 state로 정의한 값을 넣어주면 해당 state가 변할 때 함수를 실행함, 값을 넣지 않고 빈 배열로 두면 컴포넌트가 렌더될 때 한 번만 실행
+    
+    ```jsx
+    function App() {
+      const [counter, setValue] = useState(0)
+      const [keyword, setKeyword] = useState('')
+      const onClick = () => setValue(prev => prev + 1)
+      const onChange = (event) => {
+        setKeyword(event.target.value)
+      }
+    
+      console.log('i run all the time');
+    
+      useEffect(() => {
+        console.log('I only run once');
+      }, [])
+    
+      useEffect(() => {
+        if (keyword !== '' && keyword.length > 4) {
+          console.log('I only run when keyword changes');
+        }
+      }, [keyword])
+      
+      return (
+        <div>
+          <input value={keyword} onChange={onChange} type="text" placeholder='Serch here...' />
+          <h1>{counter}</h1>
+          <button onClick={onClick}>Click me</button>
+        </div>
+      );
+    }
+    ```
+    
+
+## Cleanup Function
+
+- useEffect에 정의하는 함수 안에서 return 값으로 함수를 넘기면 그 함수 안의 코드가 컴포넌트가 destroy될 때 실행됨
+- 많이 사용되지는 않음
+    ```jsx
+    function Hello() {
+      useEffect(() => {
+        console.log('created :)');
+    		
+    		// cleanup function
+        return () => console.log('destroyed :(');
+      }, [])
+      
+      return (
+        <h1>Hello</h1>
+      )
+    }
+    ```
