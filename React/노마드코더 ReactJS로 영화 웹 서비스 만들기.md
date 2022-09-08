@@ -348,3 +348,57 @@ ReactDOM.render(container, root)
       )
     }
     ```
+
+# Practice
+
+- 여러 개의 비슷한 컴포넌트를 넣고 싶으면(list처럼) `{}` 안에 JS로 작성해주면 됨
+    - `{배열.map((item, index) => <li key={index}>{item}</li>)}`
+    - v-for 사용할 때처럼 고유한 key를 정의해줘야 함
+
+## Router
+
+- `npm install react-router-dom` `npm i react-router-dom@5.3.0`
+- router: URL을 보고있는 컴포넌트
+    
+    ```jsx
+    import {
+      BrowserRouter as Router,
+      Switch,
+      Route,
+    } from 'react-router-dom'
+    import Home from "./routes/Home"
+    import Detail from "./routes/Detail"
+    
+    function App() {
+      return (
+        <Router>
+          <Switch>
+            <Route path="/movie">
+              <Detail />
+            </Route>
+            <Route path="/">
+              <Home />
+            </Route>
+          </Switch>
+        </Router>
+      )
+    }
+    
+    export default App
+    ```
+    
+    - 한 번에 여러 페이지가 렌더링되도록 하지 않기 위해서 Switch를 사용
+        - react-router-dom 6버전부터는 Switch가 아니라 Routes를 사용
+        - 6버전부터는 `<Route path="/movie" element={<Home/>}` 이런 식으로 사용해줘야 함
+    - Link를 통해 다른 페이지로 이동
+        - react-router-dom에서 Link import 후 `<Link to="/">Home</Link>`
+- 동적 라우트
+    - path 뒤에 `/:변수` 를 붙여줌
+    - url 뒤의 변수는 useParams 함수를 이용해 가져오기 가능
+
+### Github Page에 올리기
+
+- `npm i gh-pages`
+- package.json에 작성 `"homepage": "https://깃허브계정이름.github.io/코드가 들어있는 깃허브 저장소 이름"`
+- package.json의 scripts에 작성 `“deploy”: “gh-pages -d build”` , `"predeploy": "npm run build"`
+- `npm run deploy`를 치면 github pages에 올라감
