@@ -88,3 +88,36 @@ const styles = StyleSheet.create({
 
 - 사용자 지역정보 가져오기
     - `expo install expo-location`
+
+- expo icon
+    - `expo/vector-icons` 에서 import
+    
+- 버튼 컴포넌트
+    - TouchableOpacity
+        - View처럼 박스 형태
+        - 누르면 투명해짐
+    - TouchableHighlight
+        - 클릭 시 배경색 변경
+        - underlayColor 지정
+    - TouchableSithoutFeedback
+        - 탭 이벤트를 듣지만 UI 변경은 하지 않음
+    - Pressable
+        - 더 많은 설정을 줄 수 있음
+
+- TextInput
+    - 유저가 입력할 수 있는 유일한 방법
+    - returnKeyType, returnKeyLabel
+        - 글자판에서 확인 버튼에 들어갈 문자
+    - multiline
+        - 여러 줄 쓸 수 있도록 입력칸이 늘어남
+    - onChangeText
+        - 인자로 들어오는 event가 입력되는 글자
+    - onSubmitEditing
+        - 전송(확인) 버튼을 눌렀을 때 발생하는 이벤트
+        
+- Object.assign
+    - 객체를 다른 객체와 합치기
+    - `Object.assign({}, 합치려는 객체1, 합치려는 객체2, ...)`
+    - 구조분해할당으로 합칠 수도 있음
+- 객체를 리스트처럼 나열하는 법
+    - `Object.keys(객체)` 를 하면 키를 담은 배열이 반환됨 이를 이용해 나열
