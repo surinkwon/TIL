@@ -1,5 +1,6 @@
 '''
 다익스트라
+python으로 하면 시간초과, pypy로 하면 통과
 '''
 
 from collections import deque
@@ -27,6 +28,7 @@ N, M, K, X = map(int, input().split())
 cnt = 0
 road = [set() for _ in range(N + 1)]
 
+## 도로 중복입력을 막고자 셋에 등록
 for _ in range(M):
     s, e = map(int, input().split())
     road[s].add(e)
