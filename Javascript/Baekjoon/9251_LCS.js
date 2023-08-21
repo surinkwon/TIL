@@ -1,4 +1,4 @@
-let [str1, str2] = require('fs').readFileSync('./test.txt').toString().split('\n')
+let [str1, str2] = require('fs').readFileSync('/dev/stdin').toString().split('\n')
 str1 = str1.trim()
 str2 = str2.trim()
 
