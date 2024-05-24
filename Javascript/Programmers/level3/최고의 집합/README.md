@@ -1,4 +1,4 @@
-# [최고의 집합](https://school.programmers.co.kr/learn/courses/30/lessons/43163)
+# [최고의 집합](https://school.programmers.co.kr/learn/courses/30/lessons/12938)
 
 # 처음 생각한 풀이법
 
